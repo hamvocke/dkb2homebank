@@ -1,0 +1,13 @@
+"Kreditkarte:";"9000********1337 Kreditkarte";
+
+"Zeitraum:";"Seit der letzten Abrechnung";
+"Saldo:";"31337.33 EUR";
+"Datum:";"01.04.2015";
+
+"Umsatz abgerechnet";"Wertstellung";"Belegdatum";"Umsatzbeschreibung";"Betrag (EUR)";"Ursprünglicher Betrag";
+"Nein";"02.04.2015";"01.04.2015";"APRIL FOOL'S PAYMENT";"-50,00";"";
+"Nein";"31.03.2015";"30.03.2015";"ANOTHER PAYMENT";"-50,00";"";
+"Nein";"27.03.2015";"26.03.2015";"BANANENDEPOT STOCKHOLN";"-30,00";"";
+"Ja";"23.03.2015";"21.03.2015";"POSTBANK KOPENHAGEN";"-35,00";"";
+"Ja";"23.03.2015";"21.03.2015";"RABOBANK AMSTERDAM";"-20,00";"";
+

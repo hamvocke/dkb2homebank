@@ -1,0 +1,12 @@
+"Kontonummer:";"DE38120300001111222233 / Internet-Konto";
+
+"Von:";"01.10.2014";
+"Bis:";"01.10.2015";
+"Kontostand vom:";"1.000,00";
+
+"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber / Begünstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag (EUR)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz";
+"30.03.2015";"30.03.2015";"KARTENZAHLUNG/-ABRECHNUNG";"ACME CORPORATION TEXAS";"EC 12345678 123456789012ABC";"12345678";"98765432";"-50,22";"";"";"";
+"30.03.2015";"30.03.2015";"GUTSCHRIFT";"Sallack, Tom";"MUSTACHE RENT";"DE99988877766655544400";"SOMEBAN2FO";"1337,00";"";"Tom Sallack 11020";"";
+"03.04.2015";"04.04.2015";"GUTSCHRIFT";"Norris, Chuck";"BEARD PAYMENT";"DE88866633321234329200";"FOOBARBAZ0";"660,23";"";"";"Some Reference";
+
+
