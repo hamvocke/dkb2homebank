@@ -1,14 +1,13 @@
 import unittest
 import dkb2homebank
 import os
-import sys
 
 class DKB2HomebankTest(unittest.TestCase):
     def testShouldConvertCashFile(self):
         dkb2homebank.convertDkbCash('testfiles/cash.csv')
         lineNumber = sum(1 for line in open('cashHomebank.csv'))
         self.assertEqual(lineNumber, 3)
-        
+
     def testShouldConvertVisaFile(self):
         dkb2homebank.convertVisa('testfiles/visa.csv')
         lineNumber = sum(1 for line in open('visaHomebank.csv'))
