@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import argparse
 import csv
 from datetime import datetime
@@ -41,9 +43,6 @@ homebankFieldNames = ["date",
                       "category",
                       "tags"]
 
-def skipHeader(reader):
-    for i in range(1, 6):
-        next(reader)
 
 def convertDkbCash(filename):
     with open(filename, 'r') as csvfile:
@@ -86,12 +85,15 @@ def convertVisa(filename):
                     'tags': None
                     })
 
+def skipHeader(reader):
+    for i in range(1, 6):
+        next(reader)
 
 def convertDate(dateString):
     date = datetime.strptime(dateString, "%d.%m.%Y")
     return date.strftime('%d-%m-%Y')
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(description="Convert a CSV export file from DKB online banking to a Homebank compatible CSV format.")
     parser.add_argument("filename", help="The CSV file to convert.")
 
@@ -109,3 +111,7 @@ if __name__ == '__main__':
         print("DKB Cash file converted. Output file: 'cashHomebank.csv'")
     else:
         print("You must provide the type of the CSV file (--cash for DKB Cash, --visa for DKB Visa)")
+
+
+if __name__ == '__main__':
+    main()
