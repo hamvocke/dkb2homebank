@@ -51,6 +51,11 @@ class Converter():
             reader = csv.DictReader(csvfile, dialect='dkb', fieldnames=self.dkbFieldNames)
 
             with open("cashHomebank.csv", 'w') as csvfile:
+
+                # skip header lines
+                for i in range(1, 6):
+                    next(reader)
+
                 writer = csv.DictWriter(csvfile, dialect='dkb', fieldnames=self.homebankFieldNames)
                 for row in reader:
                     writer.writerow(
