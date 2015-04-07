@@ -11,11 +11,11 @@ The script can either convert a _DKB Cash_ account report or a _Visa_ account re
 
 To convert a _DKB Cash_ CSV file simply run:
     
-    dkb2homebank.py --cash yourCashReportFile.csv
+    ./dkb2homebank.py --cash yourCashReportFile.csv
 
 To convert a _Visa_ CSV file run:
     
-    dkb2homebank.py --visa yourVisaReportFile.csv
+    ./dkb2homebank.py --visa yourVisaReportFile.csv
 
 
 Tested versions
@@ -29,4 +29,10 @@ These tests use Python's _unittest_ module and can be executed using:
     
     python dkb2homebankTest.py
 
+You can also test the script manually by using the provided testfiles:
 
+   ./dkb2homebank.py --cash testfiles/cash.csv
+   
+or
+
+  ./dkb2homebank.py --visa testfiles/visa.csv
