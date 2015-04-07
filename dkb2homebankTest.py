@@ -1,8 +1,13 @@
+from builtins import ResourceWarning
 import unittest
 import dkb2homebank
 import os
+import warnings
 
 class DKB2HomebankTest(unittest.TestCase):
+    def setUp(self):
+        warnings.simplefilter("ignore", ResourceWarning)
+
     def testShouldConvertCashFile(self):
         dkb2homebank.convertDkbCash('testfiles/cash.csv')
         lineNumber = sum(1 for line in open('cashHomebank.csv'))
