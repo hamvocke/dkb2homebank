@@ -31,8 +31,8 @@ These tests use Python's _unittest_ module and can be executed using:
 
 You can also test the script manually by using the provided testfiles:
 
-   ./dkb2homebank.py --cash testfiles/cash.csv
+    ./dkb2homebank.py --cash testfiles/cash.csv
    
 or
 
-  ./dkb2homebank.py --visa testfiles/visa.csv
+    ./dkb2homebank.py --visa testfiles/visa.csv
