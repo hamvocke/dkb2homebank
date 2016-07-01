@@ -1,0 +1,12 @@
+Kreditkarte:,1234********1234 Kreditkarte,,,,
+,,,,,
+Von:,02.07.2015,,,,
+Bis:,30.06.2016,,,,
+Saldo:,12345.67 EUR,,,,
+Datum:,29.06.2016,,,,
+,,,,,
+Umsatz abgerechnet,Wertstellung,Belegdatum,Beschreibung,Betrag (EUR),Ursprünglicher Betrag
+Nein,29.06.2016,29.06.2016,buchung1,-1234,
+Nein,24.06.2016,23.06.2016,buchung2,"11,79",
+Ja,07.12.2015,04.12.2015,buchung in fremdwaehrung,"-41,82","-30,00 GBP"
+Nein,24.11.2015,24.11.2015,buchung2,"11,79",

@@ -46,12 +46,12 @@ homebankFieldNames = ["date",
 
 def convertDkbCash(filename):
     with open(filename, 'r') as csvfile:
-        reader = csv.DictReader(csvfile, dialect='dkb', fieldnames=dkbFieldNames)
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        csvfile.seek(0)
+        reader = csv.DictReader(transactionLines(csvfile), dialect=dialect, fieldnames=dkbFieldNames)
 
-        with open("cashHomebank.csv", 'w') as csvfile:
-            skipHeader(reader)
-
-            writer = csv.DictWriter(csvfile, dialect='dkb', fieldnames=homebankFieldNames)
+        with open("cashHomebank.csv", 'w') as outfile:
+            writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebankFieldNames)
             for row in reader:
                 writer.writerow(
                     {
@@ -67,11 +67,12 @@ def convertDkbCash(filename):
 
 def convertVisa(filename):
     with open(filename, 'r') as csvfile:
-        reader = csv.DictReader(csvfile, dialect='dkb', fieldnames=visaFieldNames)
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        csvfile.seek(0)
+        reader = csv.DictReader(transactionLines(csvfile), dialect=dialect, fieldnames=visaFieldNames)
 
-        with open("visaHomebank.csv", 'w') as csvfile:
-            skipHeader(reader)
-            writer = csv.DictWriter(csvfile, dialect='dkb', fieldnames=homebankFieldNames)
+        with open("visaHomebank.csv", 'w') as outfile:
+            writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebankFieldNames)
             for row in reader:
                 writer.writerow(
                     {
@@ -85,9 +86,13 @@ def convertVisa(filename):
                     'tags': None
                     })
 
-def skipHeader(reader):
-    for i in range(1, 6):
-        next(reader)
+def transactionLines(file):
+    lines = file.readlines()
+    i = 1
+    for line in lines:
+        if "Betrag" in line:
+            return lines[i:]
+        i = i + 1
 
 def convertDate(dateString):
     date = datetime.strptime(dateString, "%d.%m.%Y")
