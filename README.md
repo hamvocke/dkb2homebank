@@ -5,7 +5,7 @@ This script converts CSV account reports from [Deutsche Kreditbank (DKB)](https:
 CSV format that can be imported by the personal finance software
 [Homebank](http://homebank.free.fr/).
 
-You can find further instructions on [my blog](http://www.onehamarmy.com/2015/04/07/import-dkb-accounts-into-homebank.html).
+You can find further instructions on [my blog](http://www.hamvocke.com/blog/import-dkb-accounts-into-homebank/).
 
 How to run the script
 ---------------------
