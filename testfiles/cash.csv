@@ -1,10 +1,9 @@
-"Kontonummer:";"DE38120300001111222233 / Internet-Konto";
+"Kontonummer:";"DE33330333331112223334 / Girokonto";
 
-"Von:";"01.10.2014";
-"Bis:";"01.10.2015";
-"Kontostand vom:";"1.000,00";
+"Von:";"20.09.2018";
+"Bis:";"20.10.2018";
+"Kontostand vom 20.10.2018:";"1.234,56 EUR";
 
-"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber / BegÃ¼nstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag (EUR)";"GlÃ¤ubiger-ID";"Mandatsreferenz";"Kundenreferenz";
-"30.03.2015";"30.03.2015";"KARTENZAHLUNG/-ABRECHNUNG";"ACME CORPORATION TEXAS";"EC 12345678 123456789012ABC";"12345678";"98765432";"-50,22";"";"";"";
-"30.03.2015";"30.03.2015";"GUTSCHRIFT";"Sallack, Tom";"MUSTACHE RENT";"DE99988877766655544400";"SOMEBAN2FO";"1337,00";"";"Tom Sallack 11020";"";
-"03.04.2015";"04.04.2015";"GUTSCHRIFT";"Norris, Chuck";"BEARD PAYMENT";"DE88866633321234329200";"FOOBARBAZ0";"660,23";"";"";"Some Reference";
+"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber / Begünstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag (EUR)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz";
+"19.10.2018";"19.10.2018";"Gutschrift";"Foo Firma";"";"DE12300301111115555666";"FOOBARFO";"45,67";"";"";"FOOFIRMA";
+"17.10.2018";"17.10.2018";"Lastschrift";"SOME ONLINE SHOP";"Some Verwendungszweck";"Some Kontonummer";"Some BLZ";"-16,78";"Some Glaeubiger ID";"Some Mandatsreferenz";"";

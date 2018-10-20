@@ -1,12 +1,11 @@
-"Kreditkarte:";"9000********1337 Kreditkarte";
+"Kreditkarte:";"1234********5678";
 
-"Zeitraum:";"Seit der letzten Abrechnung";
-"Saldo:";"31337.33 EUR";
-"Datum:";"01.04.2015";
+"Zeitraum:";"seit der letzten Abrechnung";
+"Saldo:";"1234.56 EUR";
+"Datum:";"19.10.2018";
 
-"Umsatz abgerechnet";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag (EUR)";"UrsprÃ¼nglicher Betrag";
-"Nein";"02.04.2015";"01.04.2015";"APRIL FOOL'S PAYMENT";"-50,00";"";
-"Nein";"31.03.2015";"30.03.2015";"ANOTHER PAYMENT";"-50,00";"";
-"Nein";"27.03.2015";"26.03.2015";"BANANENDEPOT STOCKHOLM";"-30,00";"";
-"Ja";"23.03.2015";"21.03.2015";"POSTBANK KOPENHAGEN";"-35,00";"";
-"Ja";"23.03.2015";"21.03.2015";"RABOBANK AMSTERDAM";"-20,00";"";
+"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag (EUR)";"Ursprünglicher Betrag";
+"Nein";"15.10.2018";"12.10.2018";"SOME BANKS ATM";"-100,00";"";
+"Nein";"11.10.2018";"10.10.2018";"SOME WEBSHOP";"-50,01";"";
+"Nein";"08.10.2018";"06.10.2018";"ANOTHER BANKS ATM";"-20,00";"";
+"Ja";"22.09.2018";"21.09.2018";"SOME INTEREST";"2,00";"";

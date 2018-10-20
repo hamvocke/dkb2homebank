@@ -45,7 +45,7 @@ homebankFieldNames = ["date",
 
 
 def convertDkbCash(filename):
-    with open(filename, 'r') as csvfile:
+    with open(filename, 'rb') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
         reader = csv.DictReader(transactionLines(csvfile), dialect=dialect, fieldnames=dkbFieldNames)
@@ -66,7 +66,7 @@ def convertDkbCash(filename):
                     })
 
 def convertVisa(filename):
-    with open(filename, 'r') as csvfile:
+    with open(filename, 'rb') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
         reader = csv.DictReader(transactionLines(csvfile), dialect=dialect, fieldnames=visaFieldNames)
@@ -90,7 +90,7 @@ def transactionLines(file):
     lines = file.readlines()
     i = 1
     for line in lines:
-        if "Buchungstag" in line:
+        if "Betrag" in line:
             return lines[i:]
         i = i + 1
 
