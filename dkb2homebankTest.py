@@ -11,17 +11,17 @@ class DKB2HomebankTest(unittest.TestCase):
     def testShouldConvertCashFile(self):
         dkb2homebank.convertDkbCash('testfiles/cash.csv')
         lineNumber = sum(1 for line in open('cashHomebank.csv'))
-        self.assertEqual(lineNumber, 3)
+        self.assertEqual(lineNumber, 2)
 
     def testShouldConvertVisaFile(self):
         dkb2homebank.convertVisa('testfiles/visa.csv')
         lineNumber = sum(1 for line in open('visaHomebank.csv'))
-        self.assertEqual(lineNumber, 5)
+        self.assertEqual(lineNumber, 4)
 
     def testShouldConvertVisaFileWithRange(self):
         dkb2homebank.convertVisa('testfiles/visaRange.csv')
         lineNumber = sum(1 for line in open('visaHomebank.csv'))
-        self.assertEqual(lineNumber, 4)
+        self.assertEqual(lineNumber, 1)
 
     def tearDown(self):
         self.delete('cashHomebank.csv')
