@@ -94,6 +94,8 @@ def transactionLines(file):
             return lines[i:]
         i = i + 1
 
+    raise ValueError("Can't convert CSV file without header line")
+
 def convertDate(dateString):
     date = datetime.strptime(dateString, "%d.%m.%Y")
     return date.strftime('%d-%m-%Y')
