@@ -4,7 +4,8 @@ import argparse
 import csv
 from datetime import datetime
 
-class dkb(csv.Dialect):
+
+class DKB(csv.Dialect):
     delimiter = ';'
     quotechar = '"'
     doublequote = True
@@ -12,81 +13,84 @@ class dkb(csv.Dialect):
     lineterminator = '\r\n'
     quoting = csv.QUOTE_MINIMAL
 
-csv.register_dialect("dkb", dkb)
 
-dkbFieldNames = ["buchungstag",
-                  "wertstellung",
-                  "buchungstext",
-                  "beguenstigter",
-                  "verwendungszweck",
-                  "kontonummer",
-                  "blz",
-                  "betrag",
-                  "glaeubigerID",
-                  "mandatsreferenz",
-                  "kundenreferenz"]
+csv.register_dialect("dkb", DKB)
 
-
-visaFieldNames =    ["abgerechnet",
-                     "wertstellung",
-                     "belegdatum",
-                     "umsatzbeschreibung",
-                     "betrag",
-                     "urspruenglicherBetrag"]
-
-homebankFieldNames = ["date",
-                      "paymode",
-                      "info",
-                      "payee",
-                      "memo",
-                      "amount",
-                      "category",
-                      "tags"]
+dkb_field_names = ["buchungstag",
+                   "wertstellung",
+                   "buchungstext",
+                   "beguenstigter",
+                   "verwendungszweck",
+                   "kontonummer",
+                   "blz",
+                   "betrag",
+                   "glaeubigerID",
+                   "mandatsreferenz",
+                   "kundenreferenz"]
 
 
-def convertDkbCash(filename):
+visa_field_names = ["abgerechnet",
+                    "wertstellung",
+                    "belegdatum",
+                    "umsatzbeschreibung",
+                    "betrag",
+                    "urspruenglicherBetrag"]
+
+homebank_field_names = ["date",
+                        "paymode",
+                        "info",
+                        "payee",
+                        "memo",
+                        "amount",
+                        "category",
+                        "tags"]
+
+
+def convert_DKB_cash(filename):
     with open(filename, 'r', encoding='iso-8859-1') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
-        reader = csv.DictReader(transactionLines(csvfile), dialect=dialect, fieldnames=dkbFieldNames)
+        reader = csv.DictReader(transaction_lines(csvfile), dialect=dialect, fieldnames=dkb_field_names)
 
         with open("cashHomebank.csv", 'w') as outfile:
-            writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebankFieldNames)
+            writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
             for row in reader:
                 writer.writerow(
                     {
-                    'date': convertDate(row["buchungstag"]),
-                    'paymode': 8,
-                    'info': None,
-                    'payee': row["beguenstigter"],
-                    'memo': row["verwendungszweck"],
-                    'amount': row["betrag"],
-                    'category': None,
-                    'tags': None
+                        'date': convert_date(row["buchungstag"]),
+                        'paymode': 8,
+                        'info': None,
+                        'payee': row["beguenstigter"],
+                        'memo': row["verwendungszweck"],
+                        'amount': row["betrag"],
+                        'category': None,
+                        'tags': None
                     })
 
-def convertVisa(filename):
+
+def convert_visa(filename):
     with open(filename, 'r', encoding='iso-8859-1') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
-        reader = csv.DictReader(transactionLines(csvfile), dialect=dialect, fieldnames=visaFieldNames)
+        reader = csv.DictReader(transaction_lines(csvfile), dialect=dialect, fieldnames=visa_field_names)
 
         with open("visaHomebank.csv", 'w') as outfile:
-            writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebankFieldNames)
+            writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
             for row in reader:
                 writer.writerow(
                     {
-                    'date': convertDate(row["wertstellung"]),
-                    'paymode': 1,
-                    'info': None,
-                    'payee': None,
-                    'memo': row["umsatzbeschreibung"],
-                    'amount': row["betrag"],
-                    'category': None,
-                    'tags': None
+                        'date': convert_date(row["wertstellung"]),
+                        'paymode': 1,
+                        'info': None,
+                        'payee': None,
+                        'memo': row["umsatzbeschreibung"],
+                        'amount': row["betrag"],
+                        'category': None,
+                        'tags': None
                     })
 
-def transactionLines(file):
+
+def transaction_lines(file):
     lines = file.readlines()
     i = 1
     for line in lines:
@@ -96,12 +100,16 @@ def transactionLines(file):
 
     raise ValueError("Can't convert CSV file without header line")
 
-def convertDate(dateString):
-    date = datetime.strptime(dateString, "%d.%m.%Y")
+
+def convert_date(date_string):
+    date = datetime.strptime(date_string, "%d.%m.%Y")
     return date.strftime('%d-%m-%Y')
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Convert a CSV export file from DKB online banking to a Homebank compatible CSV format.")
+    parser = argparse.ArgumentParser(description=
+                                     "Convert a CSV export file from DKB online banking "
+                                     "to a Homebank compatible CSV format.")
     parser.add_argument("filename", help="The CSV file to convert.")
 
     group = parser.add_mutually_exclusive_group()
@@ -111,10 +119,10 @@ def main():
     args = parser.parse_args()
 
     if args.visa:
-        convertVisa(args.filename)
+        convert_visa(args.filename)
         print("DKB Visa file converted. Output file: 'visaHomebank.csv'")
     elif args.cash:
-        convertDkbCash(args.filename)
+        convert_DKB_cash(args.filename)
         print("DKB Cash file converted. Output file: 'cashHomebank.csv'")
     else:
         print("You must provide the type of the CSV file (--cash for DKB Cash, --visa for DKB Visa)")
