@@ -19,6 +19,11 @@ To convert a _Visa_ CSV file run:
     
     ./dkb2homebank.py --visa yourVisaReportFile.csv
 
+Importing into Homebank
+-----------------------
+Import the converted CSV file into Homebank by going to `File -> Import` and selecting the _output_ file you got when running your script.
+
+**Note**: If Homebank tells you that your CSV file is invalid, go to `Settings -> Import/Export` and make sure that the `Delimiter` is set to `semicolon` and try importing again.
 
 Tested versions
 ---------------
