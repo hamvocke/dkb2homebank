@@ -100,7 +100,7 @@ def transaction_lines(file):
     lines = file.readlines()
     i = 1
     for line in lines:
-        if "Betrag" in line:
+        if "Betrag" in line and "Wertstellung" in line:
             return lines[i:]
         i = i + 1
 
