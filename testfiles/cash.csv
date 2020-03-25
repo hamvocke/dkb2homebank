@@ -3,6 +3,8 @@
 "Von:";"20.09.2018";
 "Bis:";"20.10.2018";
 "Kontostand vom 20.10.2018:";"1.234,56 EUR";
+"Freitextsuche (im Verwendungszweck und Empfängerdaten):";"";"im Verwendungszweck und Empfängerdaten";
+"Betrag von:";"";"bis:";"";
 
 "Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber / Begünstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag (EUR)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz";
 "19.10.2018";"19.10.2018";"Gutschrift";"Foo Firma";"";"DE12300301111115555666";"FOOBARFO";"45,67";"";"";"FOOFIRMA";
