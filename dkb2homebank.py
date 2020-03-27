@@ -91,10 +91,16 @@ def convert_visa(filename):
 
 
 def transaction_lines(file):
+    """
+    Reduce the csv lines to the lines containing actual data relevant for the conversion.
+
+    :param file: The export CSV from DKB to be converted
+    :return: The lines containing the actual transaction data
+    """
     lines = file.readlines()
     i = 1
     for line in lines:
-        if "Betrag" in line:
+        if "Betrag" in line and "Wertstellung" in line:
             return lines[i:]
         i = i + 1
 
