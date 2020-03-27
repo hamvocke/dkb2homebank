@@ -50,7 +50,7 @@ def convert_DKB_cash(filename):
     with open(filename, 'r', encoding='iso-8859-1') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
-        reader = csv.DictReader(transaction_lines(csvfile), dialect=dialect, fieldnames=dkb_field_names)
+        reader = csv.DictReader(find_transaction_lines(csvfile), dialect=dialect, fieldnames=dkb_field_names)
 
         with open("cashHomebank.csv", 'w') as outfile:
             writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
@@ -72,7 +72,7 @@ def convert_visa(filename):
     with open(filename, 'r', encoding='iso-8859-1') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
-        reader = csv.DictReader(transaction_lines(csvfile), dialect=dialect, fieldnames=visa_field_names)
+        reader = csv.DictReader(find_transaction_lines(csvfile), dialect=dialect, fieldnames=visa_field_names)
 
         with open("visaHomebank.csv", 'w') as outfile:
             writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
@@ -90,7 +90,7 @@ def convert_visa(filename):
                     })
 
 
-def transaction_lines(file):
+def find_transaction_lines(file):
     """
     Reduce the csv lines to the lines containing actual data relevant for the conversion.
 
@@ -100,6 +100,8 @@ def transaction_lines(file):
     lines = file.readlines()
     i = 1
     for line in lines:
+        # simple heuristic to find the csv header line. Both these strings
+        # appear in headers of the cash and visa CSVs.
         if "Betrag" in line and "Wertstellung" in line:
             return lines[i:]
         i = i + 1
