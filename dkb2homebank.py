@@ -47,6 +47,11 @@ homebank_field_names = ["date",
 
 
 def convert_DKB_cash(filename):
+    """
+    Convert a DKB cash file to a homebank-readable import CSV.
+
+    :param filename: Path to the file to be converted
+    """
     with open(filename, 'r', encoding='iso-8859-1') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
@@ -69,6 +74,11 @@ def convert_DKB_cash(filename):
 
 
 def convert_visa(filename):
+    """
+    Convert a DKB visa file to a homebank-readable import CSV.
+
+    :param filename: Path to the file to be converted
+    """
     with open(filename, 'r', encoding='iso-8859-1') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         csvfile.seek(0)
@@ -92,10 +102,10 @@ def convert_visa(filename):
 
 def find_transaction_lines(file):
     """
-    Reduce the csv lines to the lines containing actual data relevant for the conversion.
+    Find the lines containing transaction data.
 
-    :param file: The export CSV from DKB to be converted
-    :return: The lines containing the actual transaction data
+    :param file: File containing the DKB CSV
+    :return: List of lines containing the actual transaction data
     """
     lines = file.readlines()
     i = 1
@@ -110,6 +120,7 @@ def find_transaction_lines(file):
 
 
 def convert_date(date_string):
+    """Convert the date_string to dd-mm-YYYY format."""
     date = datetime.strptime(date_string, "%d.%m.%Y")
     return date.strftime('%d-%m-%Y')
 
