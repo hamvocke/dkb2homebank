@@ -46,7 +46,7 @@ homebank_field_names = ["date",
                         "tags"]
 
 
-def convert_DKB_cash(filename, output_file=None):
+def convert_DKB_cash(filename, output_file="cashHomebank.csv"):
     """
     Convert a DKB cash file to a homebank-readable import CSV.
 
@@ -73,7 +73,7 @@ def convert_DKB_cash(filename, output_file=None):
                     })
 
 
-def convert_visa(filename, output_file=None):
+def convert_visa(filename, output_file="visaHomebank.csv"):
     """
     Convert a DKB visa file to a homebank-readable import CSV.
 

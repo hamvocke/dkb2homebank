@@ -20,7 +20,7 @@ class DKB2HomebankTest(unittest.TestCase):
 
     def testThrowErrorForEmptyCashFile(self):
         with self.assertRaises(ValueError) as context:
-            dkb2homebank.convert_DKB_cash('testfiles/cash_empty.csv', '')
+            dkb2homebank.convert_DKB_cash('testfiles/cash_empty.csv')
 
         self.assertTrue("Can't convert CSV file without header line" in str(context.exception))
 
