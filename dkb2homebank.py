@@ -58,7 +58,7 @@ def convert_DKB_cash(filename, output_file="cashHomebank.csv"):
         csvfile.seek(0)
         reader = csv.DictReader(find_transaction_lines(csvfile), dialect=dialect, fieldnames=dkb_field_names)
 
-        with open("cashHomebank.csv", 'w') as outfile:
+        with open(output_file, 'w') as outfile:
             writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
             for row in reader:
                 writer.writerow(
@@ -85,7 +85,7 @@ def convert_visa(filename, output_file="visaHomebank.csv"):
         csvfile.seek(0)
         reader = csv.DictReader(find_transaction_lines(csvfile), dialect=dialect, fieldnames=visa_field_names)
 
-        with open("visaHomebank.csv", 'w') as outfile:
+        with open(output_file, 'w') as outfile:
             writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
             for row in reader:
                 writer.writerow(
