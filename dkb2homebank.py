@@ -48,9 +48,10 @@ homebank_field_names = ["date",
 
 def convert_DKB_cash(filename, output_file="cashHomebank.csv"):
     """
-    Convert a DKB cash file to a homebank-readable import CSV.
+    Write a CSV with output consumable by Homebank's import functionality.
 
-    :param filename: Path to the file to be converted
+    :param filename: the input file path as a string
+    :param output_file: the output file path as a string
     """
     with open(filename, 'r', encoding='iso-8859-1') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))

@@ -3,6 +3,7 @@ import unittest
 import dkb2homebank
 import os
 import warnings
+import tempfile
 
 
 class DKB2HomebankTest(unittest.TestCase):
@@ -14,9 +15,9 @@ class DKB2HomebankTest(unittest.TestCase):
         lineNumber = sum(1 for line in open('cashHomebank.csv'))
         self.assertEqual(lineNumber, 2)
 
-    # def testShouldConvertCashFileAndWriteToAlternativeOutputDir(self):
-    #     dkb2homebank
-    #     dkb2homebank.convert_DKB_cash('testfiles/cash.csv')
+    def testShouldConvertCashFileAndWriteToAlternativeOutputDir(self):
+        tmpdir = tempfile.gettempdir()
+        dkb2homebank.convert_DKB_cash('testfiles/cash.csv', os.path.join(tmpdir, "cashHomebank.csv"))
 
     def testThrowErrorForEmptyCashFile(self):
         with self.assertRaises(ValueError) as context:
