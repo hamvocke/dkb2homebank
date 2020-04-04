@@ -18,6 +18,11 @@ To convert a _DKB Cash_ CSV file simply run:
 To convert a _Visa_ CSV file run:
     
     ./dkb2homebank.py --visa yourVisaReportFile.csv
+    
+You can also choose an alternative path for your output file, if the standard "cashHomebank.csv" or "visaHomebank.csv" in the working directory doesn't do it for you. Use `--output-dir` or `-o` for that:
+ 
+    ./dkb2homebank.py --cash yourCashReportFile.csv --output-dir ~/Documents/Finances/import_to_homebank.csv
+
 
 Importing into Homebank
 -----------------------
