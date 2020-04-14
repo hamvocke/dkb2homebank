@@ -30,9 +30,9 @@ Import the converted CSV file into Homebank by going to `File -> Import` and sel
 
 **Note**: If Homebank tells you that your CSV file is invalid, go to `Settings -> Import/Export` and make sure that the `Delimiter` is set to `semicolon` and try importing again.
 
-Tested versions
----------------
-I have tested the script with Python versions *2.7.9* and *3.4.3* and Homebank *5.0.0* on Arch Linux. I expect it to run with similar versions on other operating systems as well.
+Requirements
+------------
+To run this script, you need Python 3.4 or higher. I've verified that the exported CSV can be imported successfully on Homebank *5.0.0* and above.
 
 Run the tests
 -------------
