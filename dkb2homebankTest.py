@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 from builtins import ResourceWarning
 import unittest
 import dkb2homebank
