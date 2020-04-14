@@ -39,7 +39,7 @@ Run the tests
 I have included a (admittedly very small) set of tests to help a little bit during development.
 These tests use Python's _unittest_ module and can be executed using:
     
-    python dkb2homebankTest.py
+    ./dkb2homebankTest.py
 
 You can also test the script manually by using the provided testfiles:
 
