@@ -146,11 +146,11 @@ def main():
     args = setup_parser()
 
     if args.visa:
-        convert_visa(args.filename, args.output_file)
-        print("DKB Visa file converted. Output file: %s" % args.output_file)
+        convert_visa(args.filename, args.output_dir)
+        print("DKB Visa file converted. Output file: %s" % args.output_dir)
     elif args.cash:
-        convert_DKB_cash(args.filename, args.output_file)
-        print("DKB Cash file converted. Output file: %s" % args.output_file)
+        convert_DKB_cash(args.filename, args.output_dir)
+        print("DKB Cash file converted. Output file: %s" % args.output_dir)
     else:
         print("You must provide the type of the CSV file (--cash for DKB Cash, --visa for DKB Visa)")
 
