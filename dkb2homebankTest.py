@@ -6,6 +6,7 @@ import dkb2homebank
 import os
 import warnings
 import tempfile
+import subprocess
 
 
 class DKB2HomebankTest(unittest.TestCase):
@@ -44,6 +45,20 @@ class DKB2HomebankTest(unittest.TestCase):
     def delete(self, filename):
         if os.path.isfile(filename):
             os.remove(filename)
+
+
+class DKB2HomebankFunctionalTest(unittest.TestCase):
+    def testShouldRunScriptWithCashParameter(self):
+        result = subprocess.run(["./dkb2homebank.py", "--cash", "testfiles/cash.csv"])
+        self.assertEqual(0, result.returncode)
+
+    def testShouldRunScriptWithVisaParameter(self):
+        result = subprocess.run(["./dkb2homebank.py", "--visa", "testfiles/visa.csv"])
+        self.assertEqual(0, result.returncode)
+
+    def testShouldRunScriptWithOutputParameter(self):
+        result = subprocess.run(["./dkb2homebank.py", "--cash", "testfiles/cash.csv", "--output-file", "/tmp/dkb2homebank.csv"])
+        self.assertEqual(0, result.returncode)
 
 
 if __name__ == '__main__':

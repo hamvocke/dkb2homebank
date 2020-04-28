@@ -136,7 +136,7 @@ def setup_parser():
     group.add_argument("-v", "--visa", action="store_true", help="convert a DKB Visa account CSV file")
     group.add_argument("-c", "--cash", action="store_true", help="convert a DKB Cash account CSV file")
 
-    parser.add_argument('-o', '--output-dir', help='choose where to store the output file (default: working directory')
+    parser.add_argument('-o', '--output-file', help='choose where to store the output file (default: working directory')
 
     return parser.parse_args()
 
@@ -146,11 +146,13 @@ def main():
     args = setup_parser()
 
     if args.visa:
-        convert_visa(args.filename, args.output_dir)
-        print("DKB Visa file converted. Output file: %s" % args.output_dir)
+        output = args.output_file or  "visaHomebank.csv"
+        convert_visa(args.filename, output)
+        print(f"DKB Visa file converted. Output file: {output}")
     elif args.cash:
-        convert_DKB_cash(args.filename, args.output_dir)
-        print("DKB Cash file converted. Output file: %s" % args.output_dir)
+        output = args.output_file or "cashHomebank.csv"
+        convert_DKB_cash(args.filename, output)
+        print(f"DKB Cash file converted. Output file: {output}")
     else:
         print("You must provide the type of the CSV file (--cash for DKB Cash, --visa for DKB Visa)")
 
