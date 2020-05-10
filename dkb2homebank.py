@@ -14,6 +14,12 @@ class DKB(csv.Dialect):
     quoting = csv.QUOTE_MINIMAL
 
 
+class InvalidInputException(Exception):
+    """Exception for input CSVs that seem not to be valid DKB input files."""
+    def __init__(self, message):
+        self.message = message
+
+
 csv.register_dialect("dkb", DKB)
 
 dkb_field_names = ["buchungstag",
@@ -46,9 +52,34 @@ homebank_field_names = ["date",
                         "tags"]
 
 
+def identify_account_type(filename, output_file="Homebank.csv"):
+    """
+    Automatically figure out whether file is a cash or visa account CSV.
+
+    This is easily recognisable by the first line of the file:
+    A cash file has the string '"Kontonummer:"' (note the double quotes around the word as CSV field delimiters),
+    then the account IBAN, a single forward slash (/) followed by the account name, surrounded by spaces:
+
+    "Kontonummer:";"DE01234500001234567891 / Foobar";
+
+    A visa CSV looks like this:
+
+    "Kreditkarte:";"1234********6789";
+
+    :return: the string "cash" or "visa"
+    """
+    with open(filename, 'r', encoding='iso-8859-1') as csvfile:
+        header_line = csvfile.readline()
+        if header_line.startswith('"Kreditkarte:";"'):
+            return convert_visa(filename, output_file)
+        elif header_line.startswith('"Kontonummer:";"'):
+            return convert_DKB_cash(filename, output_file)
+    raise InvalidInputException("Can't recognise account type, is this a valid DKB export CSV?")
+
+
 def convert_DKB_cash(filename, output_file="cashHomebank.csv"):
     """
-    Write a CSV with output consumable by Homebank's import functionality.
+    Convert a DKB cash file (i.e. normal bank account) to a homebank-readable import CSV.
 
     :param filename: the input file path as a string
     :param output_file: the output file path as a string
@@ -79,6 +110,7 @@ def convert_visa(filename, output_file="visaHomebank.csv"):
     Convert a DKB visa file to a homebank-readable import CSV.
 
     :param filename: Path to the file to be converted
+    :param output_file: the output file path as a string
     """
     with open(filename, 'r', encoding='iso-8859-1') as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
@@ -146,7 +178,7 @@ def main():
     args = setup_parser()
 
     if args.visa:
-        output = args.output_file or  "visaHomebank.csv"
+        output = args.output_file or "visaHomebank.csv"
         convert_visa(args.filename, output)
         print(f"DKB Visa file converted. Output file: {output}")
     elif args.cash:
@@ -154,7 +186,9 @@ def main():
         convert_DKB_cash(args.filename, output)
         print(f"DKB Cash file converted. Output file: {output}")
     else:
-        print("You must provide the type of the CSV file (--cash for DKB Cash, --visa for DKB Visa)")
+        print("trying to identify account type automatically")
+        output = args.output_file or "Homebank.csv"
+        identify_account_type(args.filename, output)
 
 
 if __name__ == '__main__':
