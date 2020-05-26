@@ -34,7 +34,6 @@ dkb_field_names = ["buchungstag",
                    "mandatsreferenz",
                    "kundenreferenz"]
 
-
 visa_field_names = ["abgerechnet",
                     "wertstellung",
                     "belegdatum",
@@ -52,7 +51,19 @@ homebank_field_names = ["date",
                         "tags"]
 
 
-def identify_account_type(filename, output_file="Homebank.csv"):
+def _identify_csv_dialect(file_handle, field_names):
+    """
+
+    :param file_handle:
+    :param field_names:
+    :return:
+    """
+    dialect = csv.Sniffer().sniff(file_handle.read(1024))
+    file_handle.seek(0)
+    return csv.DictReader(find_transaction_lines(file_handle), dialect=dialect, fieldnames=field_names)
+
+
+def identify_account_type(file_handle, output_file="Homebank.csv"):
     """
     Automatically figure out whether file is a cash or visa account CSV.
 
@@ -68,69 +79,61 @@ def identify_account_type(filename, output_file="Homebank.csv"):
 
     :return: the string "cash" or "visa"
     """
-    with open(filename, 'r', encoding='iso-8859-1') as csvfile:
-        header_line = csvfile.readline()
-        if header_line.startswith('"Kreditkarte:";"'):
-            return convert_visa(filename, output_file)
-        elif header_line.startswith('"Kontonummer:";"'):
-            return convert_DKB_cash(filename, output_file)
+    header_line = file_handle.readline()
+    file_handle.seek(0)
+    if header_line.startswith('"Kreditkarte:";"'):
+        return "visa"
+    elif header_line.startswith('"Kontonummer:";"'):
+        return "cash"
     raise InvalidInputException("Can't recognise account type, is this a valid DKB export CSV?")
 
 
-def convert_DKB_cash(filename, output_file="cashHomebank.csv"):
+def convert_DKB_cash(file_handle, output_file="cashHomebank.csv"):
     """
     Convert a DKB cash file (i.e. normal bank account) to a homebank-readable import CSV.
 
-    :param filename: the input file path as a string
+    :param file_handle: file handle of the file to be converted
     :param output_file: the output file path as a string
     """
-    with open(filename, 'r', encoding='iso-8859-1') as csvfile:
-        dialect = csv.Sniffer().sniff(csvfile.read(1024))
-        csvfile.seek(0)
-        reader = csv.DictReader(find_transaction_lines(csvfile), dialect=dialect, fieldnames=dkb_field_names)
-
-        with open(output_file, 'w') as outfile:
-            writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
-            for row in reader:
-                writer.writerow(
-                    {
-                        'date': convert_date(row["buchungstag"]),
-                        'paymode': 8,
-                        'info': None,
-                        'payee': row["beguenstigter"],
-                        'memo': row["verwendungszweck"],
-                        'amount': row["betrag"],
-                        'category': None,
-                        'tags': None
-                    })
+    reader = _identify_csv_dialect(file_handle, dkb_field_names)
+    with open(output_file, 'w') as outfile:
+        writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
+        for row in reader:
+            writer.writerow(
+                {
+                    'date': convert_date(row["buchungstag"]),
+                    'paymode': 8,
+                    'info': None,
+                    'payee': row["beguenstigter"],
+                    'memo': row["verwendungszweck"],
+                    'amount': row["betrag"],
+                    'category': None,
+                    'tags': None
+                })
 
 
-def convert_visa(filename, output_file="visaHomebank.csv"):
+def convert_visa(file_handle, output_file="visaHomebank.csv"):
     """
     Convert a DKB visa file to a homebank-readable import CSV.
 
-    :param filename: Path to the file to be converted
+    :param file_handle: file handle of the file to be converted
     :param output_file: the output file path as a string
     """
-    with open(filename, 'r', encoding='iso-8859-1') as csvfile:
-        dialect = csv.Sniffer().sniff(csvfile.read(1024))
-        csvfile.seek(0)
-        reader = csv.DictReader(find_transaction_lines(csvfile), dialect=dialect, fieldnames=visa_field_names)
-
-        with open(output_file, 'w') as outfile:
-            writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
-            for row in reader:
-                writer.writerow(
-                    {
-                        'date': convert_date(row["wertstellung"]),
-                        'paymode': 1,
-                        'info': None,
-                        'payee': None,
-                        'memo': row["umsatzbeschreibung"],
-                        'amount': row["betrag"],
-                        'category': None,
-                        'tags': None
-                    })
+    reader = _identify_csv_dialect(file_handle, visa_field_names)
+    with open(output_file, 'w') as outfile:
+        writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
+        for row in reader:
+            writer.writerow(
+                {
+                    'date': convert_date(row["wertstellung"]),
+                    'paymode': 1,
+                    'info': None,
+                    'payee': None,
+                    'memo': row["umsatzbeschreibung"],
+                    'amount': row["betrag"],
+                    'category': None,
+                    'tags': None
+                })
 
 
 def find_transaction_lines(file):
@@ -170,6 +173,8 @@ def setup_parser():
 
     parser.add_argument('-o', '--output-file', help='choose where to store the output file (default: working directory')
 
+    parser.add_argument('--debug', '-d', help='output some information to STDERR')
+
     return parser.parse_args()
 
 
@@ -177,18 +182,17 @@ def main():
 
     args = setup_parser()
 
-    if args.visa:
-        output = args.output_file or "visaHomebank.csv"
-        convert_visa(args.filename, output)
-        print(f"DKB Visa file converted. Output file: {output}")
-    elif args.cash:
-        output = args.output_file or "cashHomebank.csv"
-        convert_DKB_cash(args.filename, output)
-        print(f"DKB Cash file converted. Output file: {output}")
-    else:
-        print("trying to identify account type automatically")
+    with open(args.filename, 'r', encoding='iso-8859-1') as csv_file:
         output = args.output_file or "Homebank.csv"
-        identify_account_type(args.filename, output)
+        account_type = identify_account_type(csv_file, output)
+        if "visa" == account_type or args.visa:
+            output = args.output_file or "visaHomebank.csv"
+            convert_visa(csv_file, output)
+            print(f"DKB Visa file converted. Output file: {output}") if args.debug else None
+        elif "cash" == account_type or args.cash:
+            output = args.output_file or "cashHomebank.csv"
+            convert_DKB_cash(csv_file, output)
+            print(f"DKB Cash file converted. Output file: {output}") if args.debug else None
 
 
 if __name__ == '__main__':
