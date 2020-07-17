@@ -1,4 +1,4 @@
-dkb2homebank
+dkb2homebank ![Python application](https://github.com/hamvocke/dkb2homebank/workflows/Python%20application/badge.svg)
 ============
 
 This script converts CSV account reports from [Deutsche Kreditbank (DKB)](https://www.dkb.de) to a
