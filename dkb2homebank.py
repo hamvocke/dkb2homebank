@@ -63,7 +63,7 @@ def _identify_csv_dialect(file_handle, field_names):
     return csv.DictReader(find_transaction_lines(file_handle), dialect=dialect, fieldnames=field_names)
 
 
-def identify_account_type(file_handle, output_file="Homebank.csv"):
+def identify_account_type(file_handle):
     """
     Automatically figure out whether file is a cash or visa account CSV.
 
@@ -171,7 +171,8 @@ def setup_parser():
     group.add_argument("-v", "--visa", action="store_true", help="convert a DKB Visa account CSV file")
     group.add_argument("-c", "--cash", action="store_true", help="convert a DKB Cash account CSV file")
 
-    parser.add_argument('-o', '--output-file', help='choose where to store the output file (default: working directory')
+    parser.add_argument('-o', '--output-file', default='Homebank.csv',
+                        help='choose where to store the output file (default: working directory')
 
     parser.add_argument('--debug', '-d', help='output some information to STDERR')
 
@@ -183,8 +184,7 @@ def main():
     args = setup_parser()
 
     with open(args.filename, 'r', encoding='iso-8859-1') as csv_file:
-        output = args.output_file or "Homebank.csv"
-        account_type = identify_account_type(csv_file, output)
+        account_type = identify_account_type(csv_file)
         if "visa" == account_type or args.visa:
             output = args.output_file or "visaHomebank.csv"
             convert_visa(csv_file, output)
