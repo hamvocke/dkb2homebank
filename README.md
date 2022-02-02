@@ -9,13 +9,17 @@ You can find further instructions on [my blog](http://www.hamvocke.com/blog/impo
 
 How to run the script
 ---------------------
-The script can either convert a _DKB Cash_ account report or a _Visa_ account report CSV file.
+The script can detect whether you're converting a cash or visa account based on a simple heuristic. Simply run:
 
-To convert a _DKB Cash_ CSV file simply run:
+	./dkb2homebank.py yourDKBExportFile.csv
+
+If the heuristic fails, you can pass the account type with the `-v|-c` switch:
+
+To convert a _DKB Cash_ file run:
     
     ./dkb2homebank.py --cash yourCashReportFile.csv
 
-To convert a _Visa_ CSV file run:
+To convert a _Visa_ file run:
     
     ./dkb2homebank.py --visa yourVisaReportFile.csv
     
