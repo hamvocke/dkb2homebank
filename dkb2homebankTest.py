@@ -53,13 +53,10 @@ class DKB2HomebankTest(unittest.TestCase):
         self.assertEqual(lineNumber, 5)
 
     def tearDown(self):
-        self.delete('cashHomebank.csv')
-        self.delete('visaHomebank.csv')
-        self.delete('giroHomebank.csv')
+        delete('cashHomebank.csv')
+        delete('visaHomebank.csv')
+        delete('giroHomebank.csv')
 
-    def delete(self, filename):
-        if os.path.isfile(filename):
-            os.remove(filename)
 
 
 class DKB2HomebankFunctionalTest(unittest.TestCase):
@@ -78,7 +75,13 @@ class DKB2HomebankFunctionalTest(unittest.TestCase):
     def testShouldRunScriptWithOutputParameter(self):
         result = subprocess.run(["./dkb2homebank.py", "--cash", "testfiles/cash.csv", "--output-file", "/tmp/dkb2homebank.csv"])
         self.assertEqual(0, result.returncode)
+    
+    def tearDown(self):
+        delete('Homebank.csv')
 
+def delete(filename):
+    if os.path.isfile(filename):
+        os.remove(filename)
 
 if __name__ == '__main__':
     unittest.main()
