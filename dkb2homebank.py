@@ -41,6 +41,18 @@ visa_field_names = ["abgerechnet",
                     "betrag",
                     "urspruenglicherBetrag"]
 
+giro_field_names = ["buchungsdatum",
+                   "wertstellung",
+                   "status",
+                   "zahlungspflichtige*r",
+                   "zahlungsempfänger*in",
+                   "verwendungszweck",
+                   "umsatztyp",
+                   "betrag",
+                   "gläubiger-id",
+                   "mandatsreferenz",
+                   "kundenreferenz"]
+
 homebank_field_names = ["date",
                         "paymode",
                         "info",
@@ -65,7 +77,7 @@ def _identify_csv_dialect(file_handle, field_names):
 
 def identify_account_type(file_handle):
     """
-    Automatically figure out whether file is a cash or visa account CSV.
+    Automatically figure out whether a file is a cash, visa, or giro account CSV.
 
     This is easily recognisable by the first line of the file:
     A cash file has the string '"Kontonummer:"' (note the double quotes around the word as CSV field delimiters),
@@ -77,7 +89,11 @@ def identify_account_type(file_handle):
 
     "Kreditkarte:";"1234********6789";
 
-    :return: the string "cash" or "visa"
+    And a giro CSV file (introduced with the new banking portal in 2023) looks like this:
+
+    "Konto:";"Girokonto DE33**************6789"
+
+    :return: the string "cash", "visa", or "giro"
     """
     header_line = file_handle.readline()
     file_handle.seek(0)
@@ -85,10 +101,12 @@ def identify_account_type(file_handle):
         return "visa"
     elif header_line.startswith('"Kontonummer:";"'):
         return "cash"
+    elif header_line.startswith('"Konto";"Girokonto'):
+        return "giro"
     raise InvalidInputException("Can't recognise account type, is this a valid DKB export CSV?")
 
 
-def convert_DKB_cash(file_handle, output_file="cashHomebank.csv"):
+def convert_cash(file_handle, output_file="cashHomebank.csv"):
     """
     Convert a DKB cash file (i.e. normal bank account) to a homebank-readable import CSV.
 
@@ -135,6 +153,29 @@ def convert_visa(file_handle, output_file="visaHomebank.csv"):
                     'tags': None
                 })
 
+def convert_giro(file_handle, output_file="giroHomebank.csv"):
+    """
+    Convert a DKB giro file (i.e. the normal bank account file available in the
+    new banking portal introduced in 2023) to a homebank-readable import CSV.
+
+    :param file_handle: file handle of the file to be converted
+    :param output_file: the output file path as a string
+    """
+    reader = _identify_csv_dialect(file_handle, giro_field_names)
+    with open(output_file, 'w') as outfile:
+        writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
+        for row in reader:
+            writer.writerow(
+                {
+                    'date': convert_short_date(row["buchungsdatum"]),
+                    'paymode': 8,
+                    'info': None,
+                    'payee': row["zahlungsempfänger*in"],
+                    'memo': row["verwendungszweck"],
+                    'amount': row["betrag"],
+                    'category': None,
+                    'tags': None
+                })
 
 def find_transaction_lines(file):
     """
@@ -147,7 +188,7 @@ def find_transaction_lines(file):
     i = 1
     for line in lines:
         # simple heuristic to find the csv header line. Both these strings
-        # appear in headers of the cash and visa CSVs.
+        # appear in headers of the cash, visa, and giro CSVs.
         if "Betrag" in line and "Wertstellung" in line:
             return lines[i:]
         i = i + 1
@@ -160,6 +201,10 @@ def convert_date(date_string):
     date = datetime.strptime(date_string, "%d.%m.%Y")
     return date.strftime('%d-%m-%Y')
 
+def convert_short_date(date_string):
+    """Convert the date_string to dd-mm-YYYY format."""
+    date = datetime.strptime(date_string, "%d.%m.%y")
+    return date.strftime('%d-%m-%Y')
 
 def setup_parser():
     parser = argparse.ArgumentParser(description=
@@ -170,6 +215,7 @@ def setup_parser():
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-v", "--visa", action="store_true", help="convert a DKB Visa account CSV file")
     group.add_argument("-c", "--cash", action="store_true", help="convert a DKB Cash account CSV file")
+    group.add_argument("-g", "--giro", action="store_true", help="convert a DKB Giro account CSV file (newly introduced in 2023)")
 
     parser.add_argument('-o', '--output-file', default='Homebank.csv',
                         help='choose where to store the output file (default: working directory')
@@ -191,8 +237,12 @@ def main():
             print(f"DKB Visa file converted. Output file: {output}") if args.debug else None
         elif "cash" == account_type or args.cash:
             output = args.output_file or "cashHomebank.csv"
-            convert_DKB_cash(csv_file, output)
+            convert_cash(csv_file, output)
             print(f"DKB Cash file converted. Output file: {output}") if args.debug else None
+        elif "giro" == account_type or args.giro:
+            output = args.output_file or "cashHomebank.csv"
+            convert_giro(csv_file, output)
+            print(f"DKB Giro file converted. Output file: {output}") if args.debug else None
 
 
 if __name__ == '__main__':
