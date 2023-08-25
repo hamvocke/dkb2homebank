@@ -22,7 +22,7 @@ class InvalidInputException(Exception):
 
 csv.register_dialect("dkb", DKB)
 
-dkb_field_names = ["buchungstag",
+cash_field_names = ["buchungstag",
                    "wertstellung",
                    "buchungstext",
                    "beguenstigter",
@@ -95,7 +95,7 @@ def convert_DKB_cash(file_handle, output_file="cashHomebank.csv"):
     :param file_handle: file handle of the file to be converted
     :param output_file: the output file path as a string
     """
-    reader = _identify_csv_dialect(file_handle, dkb_field_names)
+    reader = _identify_csv_dialect(file_handle, cash_field_names)
     with open(output_file, 'w') as outfile:
         writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
         for row in reader:
