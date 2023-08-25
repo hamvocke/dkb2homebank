@@ -229,7 +229,7 @@ def main():
 
     args = setup_parser()
 
-    with open(args.filename, 'r', encoding='iso-8859-1') as csv_file:
+    with open(args.filename, 'r', encoding='utf-8') as csv_file:
         account_type = identify_account_type(csv_file)
         if "visa" == account_type or args.visa:
             output = args.output_file or "visaHomebank.csv"
