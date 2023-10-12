@@ -116,7 +116,7 @@ def convert_visa(file_path, output_file="visaHomebank.csv"):
                 })
 
 def strip_currency(currency_string):
-    return currency_string.replace(" €", "")
+    return currency_string.replace("€", "").strip()
 
 def convert_giro(file_path, output_file="giroHomebank.csv"):
     """

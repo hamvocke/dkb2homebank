@@ -7,56 +7,40 @@ import os
 import warnings
 import tempfile
 import subprocess
+import filecmp
 
+def fileContentEqual(file1, file2):
+    return filecmp.cmp(file1, file2)
 
 class DKB2HomebankTest(unittest.TestCase):
     def setUp(self):
         warnings.simplefilter("ignore", ResourceWarning)
 
     def testShouldConvertCashFile(self):
-        with open(r'testfiles/cash.csv', encoding='iso-8859-1') as csv_file:
-            dkb2homebank.convert_cash(csv_file, 'cashHomebank.csv')
-            csv_file.seek(0)
-            lineNumber = len(dkb2homebank.find_transaction_lines(csv_file))
-            self.assertEqual(lineNumber, 2)
-
-    def testShouldConvertCashFileAndWriteToAlternativeOutputDir(self):
-        with open(r'testfiles/cash.csv', encoding='iso-8859-1') as csv_file:
-            tmpdir = tempfile.gettempdir()
-            dkb2homebank.convert_cash(csv_file, os.path.join(tmpdir, "cashHomebank.csv"))
+        dkb2homebank.convert_cash('testfiles/cash.csv', 'cashHomebank.csv')
+        self.assertTrue(fileContentEqual('testfiles/expected-output/cashHomebank.csv', 'cashHomebank.csv'))
 
     def testThrowErrorForEmptyCashFile(self):
         with self.assertRaises(ValueError) as context:
-            with open('testfiles/cash_empty.csv', encoding='iso-8859-1') as csv_file:
-                dkb2homebank.convert_cash(csv_file)
+            dkb2homebank.convert_cash('testfiles/cash_empty.csv')
         self.assertTrue("Can't convert CSV file without header line" in str(context.exception))
 
     def testShouldConvertVisaFile(self):
-        with open('testfiles/visa.csv', encoding='iso-8859-1') as csv_file:
-            dkb2homebank.convert_visa(csv_file, 'visaHomebank.csv')
-            csv_file.seek(0)
-            lineNumber = len(dkb2homebank.find_transaction_lines(csv_file))
-        self.assertEqual(lineNumber, 4)
+        dkb2homebank.convert_visa('testfiles/visa.csv', 'visaHomebank.csv')
+        self.assertTrue(fileContentEqual('testfiles/expected-output/visaHomebank.csv', 'visaHomebank.csv'))
 
     def testShouldConvertVisaFileWithRange(self):
-        with open('testfiles/visaRange.csv', encoding='iso-8859-1') as csv_file:
-            dkb2homebank.convert_visa(csv_file, 'visaHomebank.csv')
-            csv_file.seek(0)
-            lineNumber = len(dkb2homebank.find_transaction_lines(csv_file))
-            self.assertEqual(lineNumber, 1)
+        dkb2homebank.convert_visa('testfiles/visaRange.csv', 'visaHomebank.csv')
+        self.assertTrue(fileContentEqual('testfiles/expected-output/visaRangeHomebank.csv', 'visaHomebank.csv'))
 
     def testShouldConvertGiroFile(self):
-        with open('testfiles/giro.csv', encoding='iso-8859-1') as csv_file:
-            dkb2homebank.convert_giro(csv_file, 'giroHomebank.csv')
-            csv_file.seek(0)
-            lineNumber = len(dkb2homebank.find_transaction_lines(csv_file))
-        self.assertEqual(lineNumber, 5)
+        dkb2homebank.convert_giro('testfiles/giro.csv', 'giroHomebank.csv')
+        self.assertTrue(fileContentEqual('testfiles/expected-output/giroHomebank.csv', 'giroHomebank.csv'))
 
     def tearDown(self):
         delete('cashHomebank.csv')
         delete('visaHomebank.csv')
         delete('giroHomebank.csv')
-
 
 
 class DKB2HomebankFunctionalTest(unittest.TestCase):
@@ -77,7 +61,9 @@ class DKB2HomebankFunctionalTest(unittest.TestCase):
         self.assertEqual(0, result.returncode)
     
     def tearDown(self):
-        delete('Homebank.csv')
+        delete('cashHomebank.csv')
+        delete('visaHomebank.csv')
+        delete('giroHomebank.csv')
 
 def delete(filename):
     if os.path.isfile(filename):
