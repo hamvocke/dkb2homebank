@@ -114,7 +114,7 @@ def convert_cash(file_handle, output_file="cashHomebank.csv"):
     :param output_file: the output file path as a string
     """
     reader = _identify_csv_dialect(file_handle, cash_field_names)
-    with open(output_file, 'w') as outfile:
+    with open(output_file, 'w', encoding='utf-8') as outfile:
         writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
         for row in reader:
             writer.writerow(
@@ -138,7 +138,7 @@ def convert_visa(file_handle, output_file="visaHomebank.csv"):
     :param output_file: the output file path as a string
     """
     reader = _identify_csv_dialect(file_handle, visa_field_names)
-    with open(output_file, 'w') as outfile:
+    with open(output_file, 'w', encoding='utf-8') as outfile:
         writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
         for row in reader:
             writer.writerow(
@@ -162,7 +162,7 @@ def convert_giro(file_handle, output_file="giroHomebank.csv"):
     :param output_file: the output file path as a string
     """
     reader = _identify_csv_dialect(file_handle, giro_field_names)
-    with open(output_file, 'w') as outfile:
+    with open(output_file, 'w', encoding='utf-8') as outfile:
         writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
         for row in reader:
             writer.writerow(
