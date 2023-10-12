@@ -10,17 +10,11 @@ You can find further instructions on [my blog](http://www.hamvocke.com/blog/impo
 How to run the script
 ---------------------
 
-The script can detect what kind of account's CSV export you want to convert. Currently supported are:
+The script can convert several kinds of CSV export formats you want to convert. Currently supported are:
 
 * DKB Cash (as of the legacy web portal)
 * DKB Visa (as of the legacy web portal)
 * DKB Giro (as of the new web portal introduced in 2023)
-
-Simply run the following command to let the script auto-detect the kind of CSV file you're passing in:
-
-	./dkb2homebank.py yourDKBExportFile.csv
-
-If auto-detection doesn't work or you prefer to be explicit, you can pass the account type with the `-v|-c|-g` switch:
 
 To convert a _DKB Cash_ file run:
     
@@ -34,7 +28,7 @@ To convert a _Giro_ file (that's the new format introduced with the 2023 web por
     
     ./dkb2homebank.py --visa yourGiroReportFile.csv
     
-You can also choose an alternative path for your output file, if the standard "Homebank.csv" in the working directory doesn't do it for you. Use `--output-file` or `-o` for that:
+You can also choose an alternative path for your output file, if the standard in the working directory doesn't do it for you. Use `--output-file` or `-o` for that:
  
     ./dkb2homebank.py --cash yourCashReportFile.csv --output-file ~/Documents/Finances/import_to_homebank.csv
 
