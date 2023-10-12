@@ -115,6 +115,9 @@ def convert_visa(file_path, output_file="visaHomebank.csv"):
                     'tags': None
                 })
 
+def strip_currency(currency_string):
+    return currency_string.replace(" €", "")
+
 def convert_giro(file_path, output_file="giroHomebank.csv"):
     """
     Convert a DKB giro file (i.e. the normal bank account file available in the
@@ -134,7 +137,7 @@ def convert_giro(file_path, output_file="giroHomebank.csv"):
                     'info': None,
                     'payee': row["zahlungsempfänger*in"],
                     'memo': row["verwendungszweck"],
-                    'amount': row["betrag"],
+                    'amount': strip_currency(row["betrag"]),
                     'category': None,
                     'tags': None
                 })
