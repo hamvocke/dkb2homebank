@@ -4,7 +4,7 @@
 "Saldo:";"1234.56 EUR";
 "Datum:";"19.10.2018";
 
-"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag (EUR)";"UrsprÃ¼nglicher Betrag";
+"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag (EUR)";"Ursprünglicher Betrag";
 "Nein";"15.10.2018";"12.10.2018";"SOME BANKS ATM";"-100,00";"";
 "Nein";"11.10.2018";"10.10.2018";"SOME WEBSHOP";"-50,01";"";
 "Nein";"08.10.2018";"06.10.2018";"ANOTHER BANKS ATM";"-20,00";"";

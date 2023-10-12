@@ -3,9 +3,9 @@
 "Von:";"20.09.2018";
 "Bis:";"20.10.2018";
 "Kontostand vom 20.10.2018:";"1.234,56 EUR";
-"Freitextsuche (im Verwendungszweck und Empf√§ngerdaten):";"";"im Verwendungszweck und Empf√§ngerdaten";
+"Freitextsuche (im Verwendungszweck und Empf‰ngerdaten):";"";"im Verwendungszweck und Empf‰ngerdaten";
 "Betrag von:";"";"bis:";"";
 
-"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber / Beg√ºnstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag (EUR)";"Gl√§ubiger-ID";"Mandatsreferenz";"Kundenreferenz";
+"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber / Beg¸nstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag (EUR)";"Gl‰ubiger-ID";"Mandatsreferenz";"Kundenreferenz";
 "19.10.2018";"19.10.2018";"Gutschrift";"Foo Firma";"";"DE12300301111115555666";"FOOBARFO";"45,67";"";"";"FOOFIRMA";
 "17.10.2018";"17.10.2018";"Lastschrift";"SOME ONLINE SHOP";"Some Verwendungszweck";"Some Kontonummer";"Some BLZ";"-16,78";"Some Glaeubiger ID";"Some Mandatsreferenz";"";
