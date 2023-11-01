@@ -24,13 +24,17 @@ class DKB2HomebankTest(unittest.TestCase):
             dkb2homebank.convert_cash('testfiles/cash_empty.csv')
         self.assertTrue("Can't convert CSV file without header line" in str(context.exception))
 
-    def testShouldConvertVisaFile(self):
+    def testShouldConvertOldVisaFile(self):
         dkb2homebank.convert_old_visa('testfiles/visa.csv', 'visaHomebank.csv')
         self.assertTrue(fileContentEqual('testfiles/expected-output/visaHomebank.csv', 'visaHomebank.csv'))
 
-    def testShouldConvertVisaFileWithRange(self):
+    def testShouldConvertOldVisaFileWithRange(self):
         dkb2homebank.convert_old_visa('testfiles/visaRange.csv', 'visaHomebank.csv')
         self.assertTrue(fileContentEqual('testfiles/expected-output/visaRangeHomebank.csv', 'visaHomebank.csv'))
+
+    def testShouldConvertNewVisaFile(self):
+        dkb2homebank.convert_new_visa('testfiles/visaNew.csv', 'visaHomebank.csv')
+        self.assertTrue(fileContentEqual('testfiles/expected-output/visaNewHomebank.csv', 'visaHomebank.csv'))
 
     def testShouldConvertGiroFile(self):
         dkb2homebank.convert_giro('testfiles/giro.csv', 'giroHomebank.csv')
@@ -59,25 +63,26 @@ class DKB2HomebankTest(unittest.TestCase):
 
 
 class DKB2HomebankFunctionalTest(unittest.TestCase):
-    def testShouldRunScriptWithCashFlag(self):
-        result = subprocess.run(["./dkb2homebank.py", "--cash", "testfiles/cash.csv"])
+    def testShouldConvertCash(self):
+        result = subprocess.run(["./dkb2homebank.py", "testfiles/cash.csv"])
         self.assertEqual(0, result.returncode)
 
-    def testShouldRunScriptWithVisaFlag(self):
-        result = subprocess.run(["./dkb2homebank.py", "--visa", "testfiles/visa.csv"])
+    def testShouldConvertOldVisa(self):
+        result = subprocess.run(["./dkb2homebank.py", "testfiles/visa.csv"])
         self.assertEqual(0, result.returncode)
 
-    def testShouldRunScriptWithGiroFlag(self):
-        result = subprocess.run(["./dkb2homebank.py", "--giro", "testfiles/giro.csv"])
+    def testShouldConvertNewVisa(self):
+        result = subprocess.run(["./dkb2homebank.py", "testfiles/visaNew.csv"])
+        self.assertEqual(0, result.returncode)
+
+    def testShouldConvertGiro(self):
+        result = subprocess.run(["./dkb2homebank.py", "testfiles/giro.csv"])
         self.assertEqual(0, result.returncode)
 
     def testShouldRunScriptWithOutputParameter(self):
-        result = subprocess.run(["./dkb2homebank.py", "--cash", "testfiles/cash.csv", "--output-file", "/tmp/dkb2homebank.csv"])
+        result = subprocess.run(["./dkb2homebank.py", "testfiles/cash.csv", "--output-file", "/tmp/dkb2homebank.csv"])
         self.assertEqual(0, result.returncode)
 
-    def testShouldRunScriptWithoutExplicitFileTypeFlag(self):
-        result = subprocess.run(["./dkb2homebank.py", "testfiles/cash.csv"])
-        self.assertEqual(0, result.returncode)
     
     def tearDown(self):
         delete('cashHomebank.csv')
