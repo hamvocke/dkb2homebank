@@ -5,7 +5,6 @@ import unittest
 import dkb2homebank
 import os
 import warnings
-import tempfile
 import subprocess
 import filecmp
 
@@ -36,6 +35,22 @@ class DKB2HomebankTest(unittest.TestCase):
     def testShouldConvertGiroFile(self):
         dkb2homebank.convert_giro('testfiles/giro.csv', 'giroHomebank.csv')
         self.assertTrue(fileContentEqual('testfiles/expected-output/giroHomebank.csv', 'giroHomebank.csv'))
+
+    def testShouldDetectOldCashFile(self):
+        format = dkb2homebank.detect_csv_format('testfiles/cash.csv')
+        self.assertEqual(format, dkb2homebank.CsvFileTypes.CASH)
+
+    def testShouldDetectOldVisaFile(self):
+        format = dkb2homebank.detect_csv_format('testfiles/visa.csv')
+        self.assertEqual(format, dkb2homebank.CsvFileTypes.OLD_VISA)
+
+    def testShouldDetectNewGiroFile(self):
+        format = dkb2homebank.detect_csv_format('testfiles/giro.csv')
+        self.assertEqual(format, dkb2homebank.CsvFileTypes.GIRO)
+
+    def testShouldDetectNewVisaFile(self):
+        format = dkb2homebank.detect_csv_format('testfiles/visaNew.csv')
+        self.assertEqual(format, dkb2homebank.CsvFileTypes.NEW_VISA)
 
     def tearDown(self):
         delete('cashHomebank.csv')
