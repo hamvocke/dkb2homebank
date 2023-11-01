@@ -25,11 +25,11 @@ class DKB2HomebankTest(unittest.TestCase):
         self.assertTrue("Can't convert CSV file without header line" in str(context.exception))
 
     def testShouldConvertVisaFile(self):
-        dkb2homebank.convert_visa('testfiles/visa.csv', 'visaHomebank.csv')
+        dkb2homebank.convert_old_visa('testfiles/visa.csv', 'visaHomebank.csv')
         self.assertTrue(fileContentEqual('testfiles/expected-output/visaHomebank.csv', 'visaHomebank.csv'))
 
     def testShouldConvertVisaFileWithRange(self):
-        dkb2homebank.convert_visa('testfiles/visaRange.csv', 'visaHomebank.csv')
+        dkb2homebank.convert_old_visa('testfiles/visaRange.csv', 'visaHomebank.csv')
         self.assertTrue(fileContentEqual('testfiles/expected-output/visaRangeHomebank.csv', 'visaHomebank.csv'))
 
     def testShouldConvertGiroFile(self):
@@ -73,6 +73,10 @@ class DKB2HomebankFunctionalTest(unittest.TestCase):
 
     def testShouldRunScriptWithOutputParameter(self):
         result = subprocess.run(["./dkb2homebank.py", "--cash", "testfiles/cash.csv", "--output-file", "/tmp/dkb2homebank.csv"])
+        self.assertEqual(0, result.returncode)
+
+    def testShouldRunScriptWithoutExplicitFileTypeFlag(self):
+        result = subprocess.run(["./dkb2homebank.py", "testfiles/cash.csv"])
         self.assertEqual(0, result.returncode)
     
     def tearDown(self):

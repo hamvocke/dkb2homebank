@@ -131,7 +131,7 @@ def convert_cash(file_path, output_file="cashHomebank.csv"):
                 })
 
 
-def convert_visa(file_path, output_file="visaHomebank.csv"):
+def convert_old_visa(file_path, output_file="visaHomebank.csv"):
     """
     Convert a DKB visa file to a homebank-readable import CSV.
 
@@ -237,7 +237,7 @@ def main():
 
     if args.visa or csv_format == CsvFileTypes.OLD_VISA:
         output = args.output_file or "visaHomebank.csv"
-        convert_visa(args.filename, output)
+        convert_old_visa(args.filename, output)
         print(f"DKB Visa file converted. Output file: {output}") if args.debug else None
     elif args.cash or csv_format == CsvFileTypes.CASH:
         output = args.output_file or "cashHomebank.csv"
