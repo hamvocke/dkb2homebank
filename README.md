@@ -20,21 +20,13 @@ The script can convert several kinds of CSV export formats you want to convert. 
 
 I recommend generating CSV files via the new web portal.
 
-To convert a _DKB Cash_ file run:
+To convert a CSV file generated from the DKB portal run:
     
-    ./dkb2homebank.py --cash yourCashReportFile.csv
-
-To convert a _Visa_ file run:
-    
-    ./dkb2homebank.py --visa yourVisaReportFile.csv
-    
-To convert a _Giro_ file (that's the new format introduced with the 2023 web portal overhaul) run:
-    
-    ./dkb2homebank.py --visa yourGiroReportFile.csv
+    ./dkb2homebank.py yourCsvFile.csv
     
 You can also choose an alternative path for your output file, if the standard in the working directory doesn't do it for you. Use `--output-file` or `-o` for that:
  
-    ./dkb2homebank.py --cash yourCashReportFile.csv --output-file ~/Documents/Finances/import_to_homebank.csv
+    ./dkb2homebank.py yourCsvFile.csv --output-file ~/Documents/Finances/import_to_homebank.csv
 
 
 Importing into Homebank
