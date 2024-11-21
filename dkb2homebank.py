@@ -96,7 +96,8 @@ def detect_csv_format(file_path):
     if header.startswith("\"Kontonummer:\""):
         return CsvFileTypes.CASH
     
-    if header.startswith("\"Girokonto\""):
+    # "Konto" is the old-style export, "Girokonto" was introduced around November 2024
+    if header.startswith("\"Konto\"") or header.startswith("\"Girokonto\""):
         return CsvFileTypes.GIRO
 
     if header.startswith("\"Karte\""):
