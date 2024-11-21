@@ -204,12 +204,12 @@ def convert_giro(file_path, output_file="giroHomebank.csv"):
         for row in reader:
             writer.writerow(
                 {
-                    'date': convert_short_date(row["buchungsdatum"]),
+                    'date': convert_short_date(row.get("buchungsdatum")),
                     'paymode': 8,
                     'info': None,
-                    'payee': f"{row['zahlungsempfänger*in']} {row['IBAN']}",
-                    'memo': row["verwendungszweck"],
-                    'amount': strip_currency(row["betrag"]),
+                    'payee': f"{row.get('zahlungsempfänger*in')} {row.get('IBAN')}",
+                    'memo': row.get("verwendungszweck"),
+                    'amount': strip_currency(row.get("betrag")),
                     'category': None,
                     'tags': None
                 })
