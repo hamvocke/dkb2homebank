@@ -58,6 +58,7 @@ giro_field_names = ["buchungsdatum",
                    "zahlungsempfänger*in",
                    "verwendungszweck",
                    "umsatztyp",
+                   "IBAN",
                    "betrag",
                    "gläubiger-id",
                    "mandatsreferenz",
@@ -95,7 +96,7 @@ def detect_csv_format(file_path):
     if header.startswith("\"Kontonummer:\""):
         return CsvFileTypes.CASH
     
-    if header.startswith("\"Konto\""):
+    if header.startswith("\"Girokonto\""):
         return CsvFileTypes.GIRO
 
     if header.startswith("\"Karte\""):
@@ -205,7 +206,7 @@ def convert_giro(file_path, output_file="giroHomebank.csv"):
                     'date': convert_short_date(row["buchungsdatum"]),
                     'paymode': 8,
                     'info': None,
-                    'payee': row["zahlungsempfänger*in"],
+                    'payee': f"{row['zahlungsempfänger*in']} {row['IBAN']}",
                     'memo': row["verwendungszweck"],
                     'amount': strip_currency(row["betrag"]),
                     'category': None,
