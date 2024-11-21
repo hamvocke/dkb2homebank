@@ -6,10 +6,17 @@ import dkb2homebank
 import os
 import warnings
 import subprocess
-import filecmp
+from difflib import unified_diff
 
 def fileContentEqual(file1, file2):
-    return filecmp.cmp(file1, file2)
+    with open(file1, "r") as f:
+      expected_lines = f.readlines()
+    with open(file2, "r") as f:
+      actual_lines = f.readlines()
+
+    diff = list(unified_diff(expected_lines, actual_lines))
+
+    return diff
 
 class DKB2HomebankTest(unittest.TestCase):
     def setUp(self):
@@ -17,7 +24,7 @@ class DKB2HomebankTest(unittest.TestCase):
 
     def testShouldConvertCashFile(self):
         dkb2homebank.convert_cash('testfiles/cash.csv', 'cashHomebank.csv')
-        self.assertTrue(fileContentEqual('testfiles/expected-output/cashHomebank.csv', 'cashHomebank.csv'))
+        self.assertEqual([], fileContentEqual('testfiles/expected-output/cashHomebank.csv', 'cashHomebank.csv'))
 
     def testThrowErrorForEmptyCashFile(self):
         with self.assertRaises(ValueError) as context:
@@ -26,19 +33,19 @@ class DKB2HomebankTest(unittest.TestCase):
 
     def testShouldConvertOldVisaFile(self):
         dkb2homebank.convert_old_visa('testfiles/visa.csv', 'visaHomebank.csv')
-        self.assertTrue(fileContentEqual('testfiles/expected-output/visaHomebank.csv', 'visaHomebank.csv'))
+        self.assertEqual([], fileContentEqual('testfiles/expected-output/visaHomebank.csv', 'visaHomebank.csv'))
 
     def testShouldConvertOldVisaFileWithRange(self):
         dkb2homebank.convert_old_visa('testfiles/visaRange.csv', 'visaHomebank.csv')
-        self.assertTrue(fileContentEqual('testfiles/expected-output/visaRangeHomebank.csv', 'visaHomebank.csv'))
+        self.assertEqual([], fileContentEqual('testfiles/expected-output/visaRangeHomebank.csv', 'visaHomebank.csv'))
 
     def testShouldConvertNewVisaFile(self):
         dkb2homebank.convert_new_visa('testfiles/visaNew.csv', 'visaHomebank.csv')
-        self.assertTrue(fileContentEqual('testfiles/expected-output/visaNewHomebank.csv', 'visaHomebank.csv'))
+        self.assertEqual([], fileContentEqual('testfiles/expected-output/visaNewHomebank.csv', 'visaHomebank.csv'))
 
     def testShouldConvertGiroFile(self):
         dkb2homebank.convert_giro('testfiles/giro.csv', 'giroHomebank.csv')
-        self.assertTrue(fileContentEqual('testfiles/expected-output/giroHomebank.csv', 'giroHomebank.csv'))
+        self.assertEqual([], fileContentEqual('testfiles/expected-output/giroHomebank.csv', 'giroHomebank.csv'))
 
     def testShouldDetectOldCashFile(self):
         format = dkb2homebank.detect_csv_format('testfiles/cash.csv')
