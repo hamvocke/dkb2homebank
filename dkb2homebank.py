@@ -190,7 +190,7 @@ def convert_new_visa(file_path, output_file="visaHomebank.csv"):
 def strip_currency(currency_string):
     return currency_string.replace("€", "").strip()
 
-def convert_giro(file_path, output_file="giroHomebank.csv"):
+def convert_giro(file_path, output_file="giroHomebank.csv", incoming_payee_source=False):
     """
     Convert a DKB giro file (i.e. the normal bank account file available in the
     new banking portal introduced in 2023) to a homebank-readable import CSV.
@@ -202,12 +202,17 @@ def convert_giro(file_path, output_file="giroHomebank.csv"):
     with open(output_file, 'w', encoding='utf-8') as outfile:
         writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
         for row in reader:
+            if incoming_payee_source and row.get('umsatztyp')=="Eingang":
+                payee = f"{row.get('zahlungspflichtige*r')} {row.get('IBAN')}"
+            else:
+                payee = f"{row.get('zahlungsempfänger*in')} {row.get('IBAN')}"
+                
             writer.writerow(
                 {
                     'date': convert_short_date(row.get("buchungsdatum")),
                     'paymode': 8,
                     'info': None,
-                    'payee': f"{row.get('zahlungsempfänger*in')} {row.get('IBAN')}",
+                    'payee': payee,
                     'memo': row.get("verwendungszweck"),
                     'amount': strip_currency(row.get("betrag")),
                     'category': None,
@@ -260,7 +265,21 @@ def main():
     csv_format = detect_csv_format(args.filename)
 
     print(f"Looks like we're trying to convert a {csv_format.value} CSV file") if args.debug else None
-
+    
+    prompt = "For incoming payments, do you want the payee field to reflect the source of the money instead of the payee (i.e. you)?\ny/N\n"
+    incoming_payee_source = False
+    default = 'n'
+    while True:
+        choice = input(prompt).strip().lower()
+        if not choice:
+            choice = default
+        if choice in ('y', 'n'):
+            choice == 'y'
+            break
+        else:
+            print("Please respond with 'y' or 'n'.")
+    incoming_payee_source = choice == 'y'
+    
     if csv_format == CsvFileTypes.OLD_VISA:
         output = args.output_file or "visaHomebank.csv"
         convert_old_visa(args.filename, output)
@@ -271,7 +290,7 @@ def main():
         print(f"DKB Cash file converted. Output file: {output}") if args.debug else None
     elif csv_format == CsvFileTypes.GIRO:
         output = args.output_file or "giroHomebank.csv"
-        convert_giro(args.filename, output)
+        convert_giro(args.filename, output, incoming_payee_source)
         print(f"DKB Giro file converted. Output file: {output}") if args.debug else None
     elif csv_format == CsvFileTypes.NEW_VISA:
         output = args.output_file or "visaHomebank.csv"
