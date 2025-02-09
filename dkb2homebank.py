@@ -206,7 +206,7 @@ def convert_giro(file_path, output_file="giroHomebank.csv"):
             payee = f"{row.get('zahlungsempfänger*in')} {row.get('IBAN')}"
 
             if row.get('umsatztyp') == "Eingang":
-                payee = f"{row.get("zahlungspflichtige*r")}"
+                payee = f"{row.get('zahlungspflichtige*r')}"
 
 
             writer.writerow(
