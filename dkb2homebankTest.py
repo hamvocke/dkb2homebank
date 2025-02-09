@@ -47,6 +47,10 @@ class DKB2HomebankTest(unittest.TestCase):
         dkb2homebank.convert_giro('testfiles/giro.csv', 'giroHomebank.csv')
         self.assertEqual([], fileContentEqual('testfiles/expected-output/giroHomebank.csv', 'giroHomebank.csv'))
 
+    def testShouldConvertTagesgeldFile(self):
+        dkb2homebank.convert_giro('testfiles/tagesgeld.csv', 'tagesgeldHomebank.csv')
+        self.assertEqual([], fileContentEqual('testfiles/expected-output/tagesgeldHomebank.csv', 'tagesgeldHomebank.csv'))
+
     def testShouldDetectOldCashFile(self):
         format = dkb2homebank.detect_csv_format('testfiles/cash.csv')
         self.assertEqual(format, dkb2homebank.CsvFileTypes.CASH)
@@ -67,6 +71,7 @@ class DKB2HomebankTest(unittest.TestCase):
         delete('cashHomebank.csv')
         delete('visaHomebank.csv')
         delete('giroHomebank.csv')
+        delete('tagesgeldHomebank.csv')
 
 
 class DKB2HomebankFunctionalTest(unittest.TestCase):
@@ -86,6 +91,14 @@ class DKB2HomebankFunctionalTest(unittest.TestCase):
         result = subprocess.run(["./dkb2homebank.py", "testfiles/giro.csv"])
         self.assertEqual(0, result.returncode)
 
+    def testShouldConvertTagesgeld(self):
+        result = subprocess.run(["./dkb2homebank.py", "testfiles/tagesgeld.csv"])
+        self.assertEqual(0, result.returncode)
+
+    def testShouldErrorWhenUsingUnknownFormat(self):
+        result = subprocess.run(["./dkb2homebank.py", "testfiles/unknown_format.csv"])
+        self.assertEqual(64, result.returncode)
+
     def testShouldRunScriptWithOutputParameter(self):
         result = subprocess.run(["./dkb2homebank.py", "testfiles/cash.csv", "--output-file", "/tmp/dkb2homebank.csv"])
         self.assertEqual(0, result.returncode)
@@ -95,6 +108,7 @@ class DKB2HomebankFunctionalTest(unittest.TestCase):
         delete('cashHomebank.csv')
         delete('visaHomebank.csv')
         delete('giroHomebank.csv')
+        delete('tagesgeldHomebank.csv')
 
 def delete(filename):
     if os.path.isfile(filename):

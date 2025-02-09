@@ -1,0 +1,10 @@
+﻿"Tagesgeld";"DE71120300001027943842"
+
+"Kontostand vom 09.02.2025:";"1.234,45 €"
+""
+"Buchungsdatum";"Wertstellung";"Status";"Zahlungspflichtige*r";"Zahlungsempfänger*in";"Verwendungszweck";"Umsatztyp";"IBAN";"Betrag (€)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz"
+"25.08.23";"25.08.23";"Gebucht";"John Doe";"Paul Payee";"";"Eingang";"DE33330333331112223334";"100.000,00";"";"";""
+"25.08.23";"25.08.23";"Gebucht";"ISSUER";"SOME COMPANY/SOMEWHERE//DE";"2023-08-24 Debitk.99 VISA Debit";"Ausgang";"DE33330333331112223334";"-10,22";"";"";"567890123456789"
+"22.08.23";"22.08.23";"Gebucht";"ISSUER";"SOME ÖTHER COMPANY/SOMEWHERE//DE";"2023-08-24 Debitk.99 VISA Debit";"Ausgang";"DE33330333331112223334";"-10,22";"";"";"567890123456789"
+"20.08.23";"20.08.23";"Gebucht";"Doe,John";"";"Some Depot Payment";"Ausgang";"DE33330333331112223334";"-1.234,56";"";"";""
+"10.08.23";"10.08.23";"Gebucht";"Some Company";"J DOE";"LOHN 08/2023";"Eingang";"DE33330333331112223334";"2.345,67";"";"";""

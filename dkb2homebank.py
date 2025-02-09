@@ -3,6 +3,7 @@
 import argparse
 import csv
 import sys
+import os
 from enum import Enum
 from datetime import datetime
 
@@ -97,7 +98,7 @@ def detect_csv_format(file_path):
         return CsvFileTypes.CASH
     
     # "Konto" is the old-style export, "Girokonto" was introduced around November 2024
-    if header.startswith("\"Konto\"") or header.startswith("\"Girokonto\""):
+    if header.startswith("\"Konto\"") or header.startswith("\"Girokonto\"") or header.startswith("\"Tagesgeld\""):
         return CsvFileTypes.GIRO
 
     if header.startswith("\"Karte\""):
@@ -279,7 +280,9 @@ def main():
         print(f"DKB Giro file converted. Output file: {output}") if args.debug else None
     elif csv_format == CsvFileTypes.UNKNOWN:
         print(f"Could not detect CSV file type. Are you sure this is a legitimate file?", file=sys.stderr)
+        sys.exit(os.EX_USAGE)
 
+    sys.exit(os.EX_OK)
 
 if __name__ == '__main__':
     main()
