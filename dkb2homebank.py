@@ -203,12 +203,18 @@ def convert_giro(file_path, output_file="giroHomebank.csv"):
     with open(output_file, 'w', encoding='utf-8') as outfile:
         writer = csv.DictWriter(outfile, dialect='dkb', fieldnames=homebank_field_names)
         for row in reader:
+            payee = f"{row.get('zahlungsempfänger*in')} {row.get('IBAN')}"
+
+            if row.get('umsatztyp') == "Eingang":
+                payee = f"{row.get("zahlungspflichtige*r")}"
+
+
             writer.writerow(
                 {
                     'date': convert_short_date(row.get("buchungsdatum")),
                     'paymode': 8,
                     'info': None,
-                    'payee': f"{row.get('zahlungsempfänger*in')} {row.get('IBAN')}",
+                    'payee': payee,
                     'memo': row.get("verwendungszweck"),
                     'amount': strip_currency(row.get("betrag")),
                     'category': None,
